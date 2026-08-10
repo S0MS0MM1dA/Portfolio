@@ -2,384 +2,1205 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Durjoy Podder | Software Engineer</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <title>Durjoy Podder — Cybersecurity Enthusiast</title>
     <meta
       name="description"
-      content="Durjoy Podder - Software Engineer specializing in full-stack development, scalable systems, and modern web technologies."
+      content="Durjoy Podder — CSE student and aspiring cybersecurity professional building hands-on skills in networking, Linux, and offensive security through a home lab and TryHackMe/HackTheBox."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #090c10;
+        --bg-panel: #0d1117;
+        --bg-elevated: #131a22;
+        --border: #202b36;
+        --border-soft: #182029;
+        --text: #dbe4ec;
+        --text-dim: #7c8a97;
+        --text-faint: #4c5866;
+        --accent: #39d98a;
+        --accent-dim: #1f7a52;
+        --accent-glow: rgba(57, 217, 138, 0.15);
+        --danger: #ff5c5c;
+        --warn: #ffb454;
+        --mono: "JetBrains Mono", monospace;
+        --sans: "IBM Plex Sans", sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      /* scanline atmosphere */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 200;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.012) 0px,
+          rgba(255, 255, 255, 0.012) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        mix-blend-mode: overlay;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+      }
+
+      /* ---------- SIDEBAR ---------- */
+      .sidebar {
+        background: var(--bg-panel);
+        border-right: 1px solid var(--border);
+        padding: 28px 22px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .sidebar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-dim);
+        letter-spacing: 0.03em;
+      }
+
+      .status-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent);
+        margin-right: 6px;
+        animation: pulse 2.4s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      .profile-block {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--accent-dim), #0d1117 70%);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 20px;
+        color: var(--accent);
+      }
+
+      .profile-name {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--text);
+      }
+
+      .profile-role {
+        font-size: 12.5px;
+        color: var(--text-dim);
+      }
+
+      nav.filetree {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        font-family: var(--mono);
+        font-size: 13px;
+      }
+
+      nav.filetree .tree-label {
+        color: var(--text-faint);
+        font-size: 10.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        padding-left: 2px;
+      }
+
+      nav.filetree a {
+        color: var(--text-dim);
+        padding: 7px 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+
+      nav.filetree a:hover {
+        background: var(--bg-elevated);
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      nav.filetree a.active {
+        background: var(--accent-glow);
+        color: var(--accent);
+      }
+
+      nav.filetree a .prefix {
+        color: var(--text-faint);
+        font-size: 11px;
+      }
+      nav.filetree a.active .prefix {
+        color: var(--accent-dim);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-faint);
+        border-top: 1px solid var(--border-soft);
+        padding-top: 16px;
+      }
+
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .mini-badge {
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        padding: 3px 7px;
+        border-radius: 4px;
+        font-size: 10px;
+      }
+
+      /* ---------- MAIN ---------- */
+      main {
+        padding: 48px 56px 90px;
+        max-width: 920px;
+      }
+
+      section {
+        scroll-margin-top: 32px;
+        margin-bottom: 88px;
+      }
+
+      .eyebrow {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--accent);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 18px;
+        height: 1px;
+        background: var(--accent-dim);
+      }
+
+      h2 {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 26px;
+        color: var(--text);
+        margin-bottom: 28px;
+        letter-spacing: -0.01em;
+      }
+
+      /* ---- HERO / TERMINAL ---- */
+      .hero {
+        margin-bottom: 100px;
+      }
+
+      .terminal {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+      }
+
+      .terminal-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 14px;
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-faint);
+      }
+      .terminal-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .terminal-bar span.path {
+        margin-left: 8px;
+      }
+
+      .terminal-body {
+        padding: 26px 28px 30px;
+        font-family: var(--mono);
+        font-size: 14.5px;
+        min-height: 220px;
+      }
+
+      .term-line {
+        margin-bottom: 6px;
+        color: var(--text-dim);
+        white-space: pre-wrap;
+      }
+      .term-prompt {
+        color: var(--accent);
+      }
+      .cursor {
+        display: inline-block;
+        width: 8px;
+        height: 16px;
+        background: var(--accent);
+        vertical-align: -3px;
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .hero-name {
+        font-family: var(--mono);
+        font-weight: 800;
+        font-size: clamp(38px, 5vw, 58px);
+        line-height: 1.05;
+        margin: 26px 0 6px;
+        color: #fff;
+      }
+      .hero-title {
+        font-size: 18px;
+        color: var(--text-dim);
+        margin-bottom: 20px;
+      }
+
+      .status-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 26px;
+      }
+      .status-chip {
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 7px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: var(--bg-panel);
+        color: var(--text-dim);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .status-chip.live {
+        border-color: var(--accent-dim);
+        color: var(--accent);
+      }
+
+      .hero-bio {
+        max-width: 620px;
+        color: var(--text-dim);
+        font-size: 15.5px;
+      }
+
+      .hero-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 26px;
+      }
+      .link-btn {
+        font-family: var(--mono);
+        font-size: 13px;
+        padding: 9px 15px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        color: var(--text);
+        transition:
+          border-color 0.15s,
+          color 0.15s,
+          background 0.15s;
+      }
+      .link-btn:hover {
+        border-color: var(--accent-dim);
+        color: var(--accent);
+        background: var(--accent-glow);
+        text-decoration: none;
+      }
+      .link-btn.primary {
+        background: var(--accent);
+        color: #06130c;
+        border-color: var(--accent);
+        font-weight: 600;
+      }
+      .link-btn.primary:hover {
+        background: #4be89c;
+        color: #06130c;
+      }
+
+      /* ---- EXPERIENCE ---- */
+      .exp-item {
+        border-left: 2px solid var(--border-soft);
+        padding: 0 0 34px 26px;
+        position: relative;
+      }
+      .exp-item:last-child {
+        padding-bottom: 0;
+      }
+      .exp-item::before {
+        content: "";
+        position: absolute;
+        left: -6px;
+        top: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--bg);
+        border: 2px solid var(--accent-dim);
+      }
+      .exp-item.current::before {
+        border-color: var(--accent);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      .exp-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        margin-bottom: 4px;
+      }
+      .exp-company {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--text);
+      }
+      .exp-dates {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--text-faint);
+        white-space: nowrap;
+      }
+      .exp-role {
+        color: var(--accent);
+        font-size: 13.5px;
+        margin-bottom: 12px;
+        font-family: var(--mono);
+      }
+      .exp-bullets {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .exp-bullets li {
+        color: var(--text-dim);
+        font-size: 14.5px;
+        padding-left: 18px;
+        position: relative;
+      }
+      .exp-bullets li::before {
+        content: "›";
+        position: absolute;
+        left: 0;
+        color: var(--accent-dim);
+      }
+
+      /* ---- ARSENAL / SKILLS ---- */
+      .skill-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 26px;
+      }
+      @media (max-width: 720px) {
+        .skill-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .skill-card {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 22px 22px 20px;
+      }
+      .skill-card h3 {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .skill-card p {
+        font-size: 13.5px;
+        color: var(--text-dim);
+        margin-bottom: 16px;
+      }
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        font-family: var(--mono);
+        font-size: 11.5px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+      }
+
+      /* ---- CERTS / STUDIES ---- */
+      .cert-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .cert-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .cert-name {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--text);
+      }
+      .cert-issuer {
+        font-size: 12.5px;
+        color: var(--text-dim);
+        margin-top: 2px;
+      }
+      .cert-date {
+        font-family: var(--mono);
+        font-size: 11.5px;
+        color: var(--text-faint);
+      }
+
+      .edu-block {
+        margin-top: 32px;
+      }
+      .edu-block h3 {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: var(--text-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 14px;
+      }
+      .edu-item {
+        margin-bottom: 14px;
+      }
+      .edu-school {
+        font-family: var(--mono);
+        font-weight: 600;
+        color: var(--text);
+        font-size: 14.5px;
+      }
+      .edu-detail {
+        color: var(--text-dim);
+        font-size: 13.5px;
+      }
+
+      /* ---- OPERATIONS / PROJECTS ---- */
+      .op-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .op-card {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 22px 24px;
+        transition: border-color 0.15s;
+      }
+      .op-card:hover {
+        border-color: var(--accent-dim);
+      }
+      .op-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+      .op-title {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 15.5px;
+        color: var(--text);
+      }
+      .sev {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+      }
+      .sev.high {
+        background: rgba(255, 92, 92, 0.12);
+        color: var(--danger);
+        border: 1px solid rgba(255, 92, 92, 0.3);
+      }
+      .sev.med {
+        background: rgba(255, 180, 84, 0.12);
+        color: var(--warn);
+        border: 1px solid rgba(255, 180, 84, 0.3);
+      }
+      .sev.tool {
+        background: var(--accent-glow);
+        color: var(--accent);
+        border: 1px solid rgba(57, 217, 138, 0.3);
+      }
+      .op-desc {
+        color: var(--text-dim);
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+      .op-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      /* ---- CONTACT ---- */
+      .contact-panel {
+        background: linear-gradient(
+          160deg,
+          var(--bg-panel),
+          var(--bg-elevated)
+        );
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 44px 40px;
+        text-align: center;
+      }
+      .contact-panel h2 {
+        margin-bottom: 12px;
+      }
+      .contact-panel p {
+        color: var(--text-dim);
+        max-width: 480px;
+        margin: 0 auto 26px;
+        font-size: 14.5px;
+      }
+      .contact-links {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      footer {
+        margin-top: 60px;
+        padding-top: 22px;
+        border-top: 1px solid var(--border-soft);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        color: var(--text-faint);
+      }
+
+      /* ---- Mobile ---- */
+      .mobile-topbar {
+        display: none;
+      }
+
+      @media (max-width: 880px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          position: static;
+          height: auto;
+          flex-direction: row;
+          align-items: center;
+          overflow-x: auto;
+          padding: 16px 18px;
+          gap: 18px;
+        }
+        .sidebar-top,
+        .profile-block,
+        .sidebar-footer {
+          display: none;
+        }
+        nav.filetree {
+          flex-direction: row;
+        }
+        nav.filetree .tree-label {
+          display: none;
+        }
+        main {
+          padding: 32px 22px 70px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header class="navbar">
-      <div class="logo">DP</div>
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <span><span class="status-dot"></span>SYS_ONLINE</span>
+          <span id="clock">00:00:00</span>
+        </div>
 
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+        <div class="profile-block">
+          <div class="avatar">DP</div>
+          <div>
+            <div class="profile-name">Durjoy Podder</div>
+            <div class="profile-role">Aspiring Cybersecurity Professional</div>
+          </div>
+        </div>
 
-      <nav class="nav-links">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#education">Education</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
-
-    <section class="hero" id="home">
-      <div class="hero-content">
-        <p class="intro">Hi, my name is</p>
-        <h1 class="name">DURJOY PODDER.</h1>
-        <h2 class="tagline">I build things for the web.</h2>
-        <p class="description">
-          I'm a Computer Science & Engineering student in my final year,
-          passionate about building scalable software, crafting clean user
-          experiences, and solving real-world problems with code.
-        </p>
-
-        <div class="hero-buttons">
-          <a href="#projects" class="btn-primary">View My Work</a>
-          <a href="#contact" class="btn-outline">Get In Touch</a>
-          <a
-            href="assets/files/CS_Internship_Resume_Template.pdf"
-            class="btn-outline"
-            target="_blank"
+        <nav class="filetree" aria-label="Section navigation">
+          <div class="tree-label">/home/durjoy</div>
+          <a href="#overview" class="nav-link active"
+            ><span class="prefix">~/</span>overview.md</a
           >
-            View Resume
-          </a>
+          <a href="#experience" class="nav-link"
+            ><span class="prefix">~/</span>experience.log</a
+          >
+          <a href="#arsenal" class="nav-link"
+            ><span class="prefix">~/</span>arsenal.cfg</a
+          >
+          <a href="#certs" class="nav-link"
+            ><span class="prefix">~/</span>certs.json</a
+          >
+          <a href="#operations" class="nav-link"
+            ><span class="prefix">~/</span>operations/</a
+          >
+          <a href="#contact" class="nav-link"
+            ><span class="prefix">~/</span>contact.sh</a
+          >
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="badge-row">
+            <span class="mini-badge">Network+</span>
+            <span class="mini-badge">THM</span>
+            <span class="mini-badge">GMT+6</span>
+          </div>
+          <div>© 2026 Durjoy Podder — Portfolio</div>
         </div>
-      </div>
-    </section>
+      </aside>
 
-    <!-- About -->
-    <section class="section about-section" id="about">
-      <div class="section-title">
-        <h2 class="title">About Me</h2>
-        <div class="line"></div>
-      </div>
+      <!-- MAIN -->
+      <main>
+        <!-- HERO -->
+        <section class="hero" id="overview">
+          <div class="terminal">
+            <div class="terminal-bar">
+              <div class="terminal-dot" style="background: #ff5f56"></div>
+              <div class="terminal-dot" style="background: #ffbd2e"></div>
+              <div class="terminal-dot" style="background: #27c93f"></div>
+              <span class="path">durjoy@homelab: ~</span>
+            </div>
+            <div class="terminal-body">
+              <div class="term-line">
+                <span class="term-prompt">$</span> whoami
+              </div>
+              <div class="term-line" id="typed-1"></div>
+              <div class="term-line" style="margin-top: 10px">
+                <span class="term-prompt">$</span> cat status.txt
+              </div>
+              <div class="term-line" id="typed-2"></div>
+              <span class="cursor" id="cursor"></span>
+            </div>
+          </div>
 
-      <div class="about-container">
-        <div class="about-text">
-          <p>
-            Hello! I'm a final-year Computer Science & Engineering student with
-            a strong foundation in software development, data structures, and
-            algorithms. I enjoy turning ideas into elegant, efficient, and
-            user-friendly applications.
+          <h1 class="hero-name">Durjoy Podder</h1>
+          <div class="hero-title">
+            CSE Student &amp; Aspiring Cybersecurity Professional
+          </div>
+
+          <div class="status-chips">
+            <span class="status-chip live">● Open to security internships</span>
+            <span class="status-chip">Final-year CSE student</span>
+            <span class="status-chip">Bangladesh — GMT+6</span>
+          </div>
+
+          <p class="hero-bio">
+            Durjoy is a final-year Computer Science &amp; Engineering student
+            building a foundation in cybersecurity from the ground up — running
+            a home lab, working through TryHackMe and Hack The Box, and pairing
+            that hands-on practice with a solid background in software
+            development. Currently focused on offensive security fundamentals:
+            networking, Linux, and basic penetration testing.
           </p>
 
-          <p>
-            My journey in tech started when I wrote my first "Hello World"
-            program and got hooked on the magic of making computers do things.
-            Since then, I've worked on full-stack web applications, contributed
-            to open-source projects, and built tools that solve real problems.
-          </p>
-
-          <p>
-            When I'm not coding, you'll find me exploring new technologies,
-            participating in hackathons, or mentoring juniors in competitive
-            programming.
-          </p>
-        </div>
-
-        <div class="about-image">
-          <div class="image-wrapper">
-            <img src="assets/images/profile.jpg" alt="Profile" />
+          <div class="hero-links">
+            <a class="link-btn primary" href="#contact"
+              >Get in touch →</a
+            >
+            <a
+              class="link-btn"
+              href="https://github.com/S0MS0MM1dA"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub</a
+            >
+            <a
+              class="link-btn"
+              href="https://linkedin.com/in/podderdurjoy"
+              target="_blank"
+              rel="noopener noreferrer"
+              >LinkedIn</a
+            >
+            <a
+              class="link-btn"
+              href="assets/files/CS_Internship_Resume_Template.pdf"
+              target="_blank"
+              >Resume</a
+            >
+            <a class="link-btn" href="mailto:durjoypodder.cse@gmail.com"
+              >Email</a
+            >
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <!-- Skills -->
-    <section class="section skills-section" id="skills">
-      <div class="section-title">
-        <h2 class="title">Skills & Technologies</h2>
-        <div class="line"></div>
-      </div>
+        <!-- EXPERIENCE -->
+        <section id="experience">
+          <div class="eyebrow">experience.log</div>
+          <h2>Work Experience</h2>
 
-      <div class="skills-container">
-        <div class="skill-card">
-          <h3>Languages</h3>
-          <div class="skill-tags">
-            <span>JavaScript</span>
-            <span>TypeScript</span>
-            <span>Python</span>
-            <span>Java</span>
-            <span>C++</span>
-            <span>SQL</span>
-          </div>
-        </div>
-
-        <div class="skill-card">
-          <h3>Frontend</h3>
-          <div class="skill-tags">
-            <span>React</span>
-            <span>Next.js</span>
-            <span>Tailwind CSS</span>
-            <span>HTML/CSS</span>
-            <span>Redux</span>
-            <span>Framer Motion</span>
-          </div>
-        </div>
-
-        <div class="skill-card">
-          <h3>Backend</h3>
-          <div class="skill-tags">
-            <span>Node.js</span>
-            <span>Express</span>
-            <span>REST APIs</span>
-            <span>GraphQL</span>
-            <span>PostgreSQL</span>
-            <span>MongoDB</span>
-          </div>
-        </div>
-
-        <div class="skill-card">
-          <h3>Tools & DevOps</h3>
-          <div class="skill-tags">
-            <span>Git</span>
-            <span>Docker</span>
-            <span>AWS</span>
-            <span>Linux</span>
-            <span>CI/CD</span>
-            <span>Figma</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section class="section experience-section" id="experience">
-      <div class="section-title">
-        <h2 class="title">Experience</h2>
-        <div class="line"></div>
-      </div>
-
-      <div class="experience-container">
-        <div class="experience-tabs">
-          <button class="tab active" data-tab="acs">Apars Classroom</button>
-          <button class="tab" data-tab="tenms">10 Minute School</button>
-        </div>
-
-        <div class="experience-content">
-          <div class="tab-content active" id="acs">
-            <h3>Contributor <span>@ Apars Classroom</span></h3>
-            <p class="date">Mar 2021 – Sep 2022</p>
-            <ul>
+          <div class="exp-item">
+            <div class="exp-head">
+              <span class="exp-company">Apars Classroom</span>
+              <span class="exp-dates">Mar 2021 — Sep 2022</span>
+            </div>
+            <div class="exp-role">Contributor</div>
+            <ul class="exp-bullets">
               <li>
-                Contributed to HSC 21 Engineering Admission Test Preparation
-                Platform with 5000+ users.
+                Contributed to the HSC '21 Engineering Admission Test
+                Preparation Platform, used by 5,000+ students.
               </li>
               <li>
-                Contributed to HSC-21 Varsity Admission Test Preparation
-                Platform with 11000+ users.
+                Contributed to the HSC '21 Varsity Admission Test Preparation
+                Platform, used by 11,000+ students.
               </li>
             </ul>
           </div>
 
-          <div class="tab-content" id="tenms">
-            <h3>Contributor <span>@ 10 Minute School</span></h3>
-            <p class="date">Mar 2021 – Sep 2022</p>
-            <ul>
+          <div class="exp-item">
+            <div class="exp-head">
+              <span class="exp-company">10 Minute School</span>
+              <span class="exp-dates">Mar 2021 — Sep 2022</span>
+            </div>
+            <div class="exp-role">Contributor</div>
+            <ul class="exp-bullets">
               <li>
-                Contributed to HSC 21 Crash Course Program with 10000+ users.
+                Contributed to the HSC '21 Crash Course Program, reaching
+                10,000+ users.
               </li>
-              <li>Host and Manages Programs.</li>
+              <li>Hosted and managed live programs for the platform.</li>
             </ul>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <!-- Projects -->
-    <section class="section projects-section" id="projects">
-      <div class="section-title">
-        <h2 class="title">Projects</h2>
-        <div class="line"></div>
-      </div>
+        <!-- ARSENAL / SKILLS -->
+        <section id="arsenal">
+          <div class="eyebrow">arsenal.cfg</div>
+          <h2>Technical Arsenal</h2>
 
-      <div class="project-row">
-        <div class="project-image">
-          <div class="image-box">
-            <img src="assets/images/project-01.png" alt="01" />
+          <div class="skill-grid">
+            <div class="skill-card">
+              <h3>Security Fundamentals</h3>
+              <p>
+                Core networking and security concepts built through
+                certification study and guided labs.
+              </p>
+              <div class="chip-row">
+                <span class="chip">TCP/IP &amp; Networking</span>
+                <span class="chip">Linux Fundamentals</span>
+                <span class="chip">CIA Triad</span>
+                <span class="chip">Threat &amp; Vuln Basics</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <h3>Home Lab &amp; Offensive Practice</h3>
+              <p>
+                Self-built lab for hands-on offensive security practice and
+                CTF-style learning.
+              </p>
+              <div class="chip-row">
+                <span class="chip">Kali Linux</span>
+                <span class="chip">Metasploitable 2</span>
+                <span class="chip">UTM (Virtualization)</span>
+                <span class="chip">Nmap</span>
+                <span class="chip">Metasploit Basics</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <h3>Programming &amp; Scripting</h3>
+              <p>
+                Software development background that carries directly into
+                understanding how systems and apps break.
+              </p>
+              <div class="chip-row">
+                <span class="chip">Python</span>
+                <span class="chip">JavaScript</span>
+                <span class="chip">Java</span>
+                <span class="chip">C++</span>
+                <span class="chip">SQL</span>
+              </div>
+            </div>
+
+            <div class="skill-card">
+              <h3>Systems &amp; Web Development</h3>
+              <p>
+                Full-stack experience that informs an application-security
+                mindset.
+              </p>
+              <div class="chip-row">
+                <span class="chip">React / Node.js</span>
+                <span class="chip">REST APIs</span>
+                <span class="chip">PostgreSQL / MongoDB</span>
+                <span class="chip">Git</span>
+                <span class="chip">Docker</span>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div class="project-content">
-          <p class="featured">Featured Project</p>
-          <h3>GameHub Management System</h3>
+        <!-- CERTS / STUDIES -->
+        <section id="certs">
+          <div class="eyebrow">certs.json</div>
+          <h2>Certifications &amp; Education</h2>
 
-          <div class="project-description">
-            The GameHub Management System is a C# Windows Forms application, a
-            comprehensive digital distribution platform and game server
-            management software. It provides administrators with an interface to
-            add, edit and delete games from the system and offers users a
-            platform to download and view game details. The system is built to
-            be a centralized hub where multiple games can be managed, with
-            features for categorization, user management and detailed tracking
-            of download history.
+          <div class="cert-list">
+            <div class="cert-row">
+              <div>
+                <div class="cert-name">CompTIA Network+</div>
+                <div class="cert-issuer">CompTIA</div>
+              </div>
+              <div class="cert-date">In Progress</div>
+            </div>
+            <div class="cert-row">
+              <div>
+                <div class="cert-name">Introduction to Cyber Security</div>
+                <div class="cert-issuer">TryHackMe</div>
+              </div>
+              <div class="cert-date">In Progress</div>
+            </div>
           </div>
 
-          <div class="tech-stack">C#</div>
+          <div class="edu-block">
+            <h3>Studies</h3>
+            <div class="edu-item">
+              <div class="edu-school">
+                American International University — Bangladesh
+              </div>
+              <div class="edu-detail">
+                B.Sc. in Computer Science &amp; Engineering, 2023 — 2026
+              </div>
+              <div class="edu-detail">CGPA: 3.5/4.00</div>
+              <div class="edu-detail">
+                Relevant coursework: Data Structures, Algorithms, DBMS,
+                Operating Systems, Computer Networks, Machine Learning,
+                Computer Vision, AI
+              </div>
+            </div>
+            <div class="edu-item">
+              <div class="edu-school">Narsingdi Science College</div>
+              <div class="edu-detail">
+                Higher Secondary Certificate (HSC), 2019 — 2021
+              </div>
+              <div class="edu-detail">GPA: 5.00/5.00</div>
+            </div>
+          </div>
+        </section>
 
-          <div class="project-links">
-            <span
-              ><a
-                href="https://github.com/S0MS0MM1dA/GameHub"
-                target="_blank"
-                rel="noopener noreferrer"
+        <!-- OPERATIONS / PROJECTS -->
+        <section id="operations">
+          <div class="eyebrow">operations/</div>
+          <h2>Selected Operations</h2>
+
+          <div class="op-grid">
+            <div class="op-card">
+              <div class="op-top">
+                <span class="op-title">Home Security Lab</span>
+                <span class="sev tool">In progress</span>
+              </div>
+              <p class="op-desc">
+                Built a personal lab on UTM to practice offensive security
+                fundamentals — running Kali Linux against a deliberately
+                vulnerable Metasploitable 2 target to learn scanning,
+                enumeration, and basic exploitation, alongside TryHackMe and
+                Hack The Box rooms.
+              </p>
+              <div class="op-tags">
+                <span class="chip">Kali Linux</span
+                ><span class="chip">Metasploitable 2</span
+                ><span class="chip">UTM</span
+                ><span class="chip">Nmap</span>
+              </div>
+            </div>
+
+            <div class="op-card">
+              <div class="op-top">
+                <span class="op-title">GameHub Management System</span>
+                <span class="sev med">Dev project</span>
+              </div>
+              <p class="op-desc">
+                A C# Windows Forms application for managing a digital
+                distribution platform — admin controls for adding, editing,
+                and removing games, plus user management and download
+                tracking.
+              </p>
+              <div class="op-tags">
+                <span class="chip">C#</span
+                ><span class="chip">Windows Forms</span
+                ><span class="chip">User Management</span>
+              </div>
+            </div>
+
+            <div class="op-card">
+              <div class="op-top">
+                <span class="op-title">Recruzen — Job Portal</span>
+                <span class="sev med">Dev project</span>
+              </div>
+              <p class="op-desc">
+                A job portal built with PHP, JavaScript, and MySQL connecting
+                job seekers and employers, with profile creation, resume
+                uploads, job applications, and secure authentication.
+              </p>
+              <div class="op-tags">
+                <span class="chip">PHP</span
+                ><span class="chip">JavaScript</span
+                ><span class="chip">MySQL</span
+                ><span class="chip">Authentication</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+          <div class="contact-panel">
+            <div class="eyebrow" style="justify-content: center">
+              contact.sh
+            </div>
+            <h2>Let's talk security</h2>
+            <p>
+              Open to cybersecurity internships, entry-level SOC/security
+              roles, and opportunities to learn from experienced practitioners.
+              Reach out — I'll try my best to get back to you quickly.
+            </p>
+            <div class="contact-links">
+              <a
+                class="link-btn primary"
+                href="mailto:durjoypodder.cse@gmail.com"
+                >Email me</a
               >
-                <i class="fa-brands fa-github"></i></a
-            ></span>
-            <span
-              ><a
-                href="https://github.com/S0MS0MM1dA/GameHub"
+              <a
+                class="link-btn"
+                href="https://github.com/S0MS0MM1dA"
                 target="_blank"
                 rel="noopener noreferrer"
-                ><i class="fa-solid fa-link"></i></a
-            ></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-row reverse">
-        <div class="project-image">
-          <div class="image-box">
-            <img src="assets/images/project-02.png" alt="02" />
-          </div>
-        </div>
-
-        <div class="project-content">
-          <p class="featured">Featured Project</p>
-          <h3>Recruzen - Job Portal</h3>
-
-          <div class="project-description">
-            A Job Portal built with PHP, JavaScript, and MySQL, designed to
-            connect job seekers with employers. The platform allows users to
-            create profiles, upload resumes, and apply for jobs, while employers
-            can post job listings, review applications, and manage their hiring
-            process. The system features a user-friendly interface, robust
-            search functionality, and secure authentication to ensure a seamless
-            experience for both job seekers and employers.
-          </div>
-
-          <div class="tech-stack">PHP JS MYSQL</div>
-
-          <div class="project-links">
-            <span
-              ><a
-                href="https://github.com/S0MS0MM1dA/RecruZen"
-                target="_blank"
-                rel="noopener noreferrer"
+                >GitHub</a
               >
-                <i class="fa-brands fa-github"></i></a
-            ></span>
-            <span
-              ><a
-                href="https://github.com/S0MS0MM1dA/RecruZen"
+              <a
+                class="link-btn"
+                href="https://linkedin.com/in/podderdurjoy"
                 target="_blank"
                 rel="noopener noreferrer"
-                ><i class="fa-solid fa-link"></i></a
-            ></span>
+                >LinkedIn</a
+              >
+              <a
+                class="link-btn"
+                href="https://twitter.com/podderdurjoy"
+                target="_blank"
+                rel="noopener noreferrer"
+                >X / Twitter</a
+              >
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Education -->
-    <section class="section education-section" id="education">
-      <div class="section-title">
-        <h2 class="title">Education</h2>
-        <div class="line"></div>
-      </div>
+          <footer>
+            <span>© 2026 Durjoy Podder — Portfolio</span>
+            <span
+              >Status:
+              <span style="color: var(--accent)">Actively learning</span></span
+            >
+          </footer>
+        </section>
+      </main>
+    </div>
 
-      <div class="education-card">
-        <div class="edu-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+    <script>
+      // live clock
+      function tick() {
+        const el = document.getElementById("clock");
+        if (!el) return;
+        const d = new Date();
+        el.textContent = d.toLocaleTimeString("en-US", { hour12: false });
+      }
+      tick();
+      setInterval(tick, 1000);
 
-        <div class="edu-content">
-          <h3>BSC in Computer Science & Engineering</h3>
-          <p class="institution">
-            American International University - Bangladesh
-          </p>
-          <p class="edu-date">2023 – 2026</p>
-          <p class="edu-desc">CGPA: 3.5/4.00</p>
-          <p class="edu-desc">
-            Relevant Coursework: Data Structures, Algorithms, DBMS, OS, Computer
-            Networks, Machine Learning, Computer Vision, AI
-          </p>
-        </div>
-      </div>
+      // active nav highlight on scroll
+      const links = document.querySelectorAll(".nav-link");
+      const sections = [...links].map((l) =>
+        document.querySelector(l.getAttribute("href")),
+      );
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = "#" + entry.target.id;
+              links.forEach((l) =>
+                l.classList.toggle("active", l.getAttribute("href") === id),
+              );
+            }
+          });
+        },
+        { rootMargin: "-40% 0px -50% 0px", threshold: 0 },
+      );
+      sections.forEach((s) => s && observer.observe(s));
 
-      <div class="education-card">
-        <div class="edu-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      // typing effect in hero terminal
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const line1 =
+        "durjoy_podder — CSE student, aspiring cybersecurity professional";
+      const line2 = "STATUS: OPEN TO SECURITY INTERNSHIPS & ENTRY-LEVEL ROLES";
 
-        <div class="edu-content">
-          <h3>Higher Secondary Certificate(HSC)</h3>
-          <p class="institution">Narsingdi Science College</p>
-          <p class="edu-date">2019 – 2021</p>
-          <p class="edu-desc">GPA: 5.00/5.00</p>
-        </div>
-      </div>
-    </section>
+      function typeInto(el, text, speed, cb) {
+        if (reduceMotion) {
+          el.textContent = text;
+          if (cb) cb();
+          return;
+        }
+        let i = 0;
+        el.textContent = "";
+        const iv = setInterval(() => {
+          el.textContent += text[i];
+          i++;
+          if (i >= text.length) {
+            clearInterval(iv);
+            if (cb) cb();
+          }
+        }, speed);
+      }
 
-    <!-- Contact -->
-    <section class="section contact-section" id="contact">
-      <p class="contact-number">What's Next?</p>
-      <h2 class="contact-title">Get In Touch</h2>
-
-      <p class="contact-text">
-        I'm currently looking for full-time software engineering opportunities.
-        Whether you have a question, a project idea, or just want to say hi — my
-        inbox is always open. I'll try my best to get back to you!
-      </p>
-
-      <a href="mailto:durjoypodder.cse@gmail.com" class="contact-btn">
-        Say Hello
-      </a>
-
-      <div class="social-icons">
-        <a
-          href="https://github.com/S0MS0MM1dA"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><i class="fa-brands fa-github"></i
-        ></a>
-        <a
-          href="https://linkedin.com/in/podderdurjoy"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><i class="fa-brands fa-linkedin"></i
-        ></a>
-        <a
-          href="https://twitter.com/podderdurjoy"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><i class="fa-brands fa-square-x-twitter"></i
-        ></a>
-        <a href="mailto:durjoypodder.cse@gmail.com"
-          ><i class="fa-regular fa-envelope"></i
-        ></a>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <p>© 2026 Durjoy Podder. All rights reserved.</p>
-    </footer>
-
-    <script src="assets/js/script.js"></script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const t1 = document.getElementById("typed-1");
+        const t2 = document.getElementById("typed-2");
+        const cursor = document.getElementById("cursor");
+        typeInto(t1, line1, 22, () => {
+          setTimeout(
+            () =>
+              typeInto(t2, line2, 22, () => {
+                cursor.style.marginLeft = "0";
+              }),
+            250,
+          );
+        });
+      });
+    </script>
   </body>
 </html>
